@@ -187,6 +187,7 @@ nslookup -type=SOA tftecprime.cloud
 Opções:
 
 OPÇÃO01: https://app.zerossl.com
+
 OPÇÃO02: https://punchsalad.com/ssl-certificate-generator/
 
 4 - Converter o certificado para PFX:
