@@ -180,7 +180,7 @@ vnet-hub/vnet-spoke02 - vnet-spoke02/vnet-hub
 2 - Apontar registros NS (name server) do provedor público para o Azure.
 Testar a validação do DNS com o seguinte comando:
 ```cmd
-nslookup -type=SOA tftec.cloud
+nslookup -type=SOA tftecprime.cloud
 ```
 3 - Gerar um certificado digital válido:
 Opções:
