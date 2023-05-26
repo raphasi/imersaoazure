@@ -199,13 +199,18 @@ https://www.sslshopper.com/ssl-converter.html
 ```cmd
    Nome: kvault-certs
    Região: east-us
+   Private Endpoint: pvt-kvault
    Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp 
 ```
 
 2- Fazer upload do certificado PFX no Key Vault
-
+```cmd
+   Como o acesso externo está desabilitado, upload do certificado precisa ser feito de uma VM do Azure.
+   Acessar a VM-APPS e fazer o upload do certificado.
+   ```
 3- Criar um managed identify e conceder permissão no Key Vault como:
 ```cmd
+   Nome: svcappgwcert
    Secret: Get
 ```
 
@@ -217,7 +222,7 @@ Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
 2- Baixar código da aplicação aplicação do seguinte link do Github:
 
-https://github.com/tftec-raphael
+https://github.com/raphasi/imersaoazure/archive/refs/heads/main.zip
 
 3- Copiar pasta da aplicação para o seguinte caminho
 ```cmd
