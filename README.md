@@ -6,7 +6,7 @@ Temos como objetivo construir uma infraestrutura completa, simulando um cenário
 # Estrutura
 O desenho de arquitetura informado abaixo mostra alguns detalhes de como está configurada a estrutura da empresa que iremos construir.
 
-![TFTEC Cloud](https://github.com/raphasi/imersaoazure/Arquitetura.png "Arquitetura Imersão")
+![TFTEC Cloud]([https://github.com/raphasi/imersaoazure/Arquitetura.png](https://github.com/raphasi/imersaoazure/blob/main/Arquitetura.png) "Arquitetura Imersão")
 
 ## STEP01 - Criar um Resource Group e aplicar Azure Policy
 1- Criar Resource Group
