@@ -155,6 +155,7 @@ Para todas as VMs iremos o tamanho B2S e utilizar o sistema operacional Windows 
    Nome: bastion01
    Região: East US
    SKU: Standard
+   Configuration: Shareable Link
 ```
 
 3 - Desabilitar o firewall de todas as VMs via Run Command, usando o seguinte comando:
