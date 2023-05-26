@@ -119,6 +119,7 @@ Para todas as VMs iremos o tamanho B2S e utilizar o sistema operacional Windows 
 ```
 
 ```cmd
+OBS: Na conta trial pode não existir a disponibilidade de usar duas Zonas, caso isso aconteça, não utilize nenhuma configuração de alta disponibilidade.
    # UK SOUTH
    Nome: vm-intra01
    Região: uk-south
@@ -143,7 +144,7 @@ Para todas as VMs iremos o tamanho B2S e utilizar o sistema operacional Windows 
    
    Nome: vm-web02
    Região: japan-east
-   Zone: Zone 1
+   Zone: Zone 2
    Vnet: vnet-spoke02
    Subnet: sub-web
  ```  
