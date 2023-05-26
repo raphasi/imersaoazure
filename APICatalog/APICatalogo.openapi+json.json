@@ -1,0 +1,1744 @@
+{
+    "openapi": "3.0.1",
+  "info": {
+    "title": "APICatalogo",
+    "description": "Catálogo de Produtos e Categorias",
+    "termsOfService": "https://tftec.com.br/cloud/privacidade/",
+    "contact": {
+      "name": "Contato TFTEC",
+      "url": "https://tftec.com.br",
+      "email": "contato@tftec.com.br"
+    },
+    "version": "1.0"
+  },
+    "servers": [
+        {
+            "url": "https://api-tftec.azure-api.net"
+        }
+    ],
+    "paths": {
+        "/api/Autoriza": {
+            "get": {
+                "tags": [
+                    "Autoriza"
+                ],
+                "summary": "/api/Autoriza - GET",
+                "operationId": "get-api-autoriza",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiAutorizaGet200ApplicationJsonResponse"
+                                },
+                                "example": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/Autoriza/register": {
+            "post": {
+                "tags": [
+                    "Autoriza"
+                ],
+                "summary": "Registra um novo usuário",
+                "description": "Registra um novo usuário",
+                "operationId": "post-api-autoriza-register",
+                "requestBody": {
+                    "description": "Um objeto UsuarioDTO",
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Autoriza/login": {
+            "post": {
+                "tags": [
+                    "Autoriza"
+                ],
+                "summary": "Verifica as credenciais de um usuário",
+                "description": "retorna o Status 200 e o token para  novo",
+                "operationId": "post-api-autoriza-login",
+                "requestBody": {
+                    "description": "Um objeot do tipo UsuarioDTO",
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsuarioDTO"
+                            },
+                            "example": {
+                                "email": "string",
+                                "password": "string",
+                                "confirmPassword": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/{v}/Categorias/produtos": {
+            "get": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Obtém os produtos relacionados para cada categoria",
+                "description": "Obtém os produtos relacionados para cada categoria",
+                "operationId": "get-api-v-categorias-produtos",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoriaDTOArray"
+                                },
+                                "example": [
+                                    {
+                                        "categoriaId": 0,
+                                        "nome": "string",
+                                        "imagemUrl": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Categorias": {
+            "get": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Retorna uma coleção de objetos Categoria",
+                "description": "Retorna uma coleção de objetos Categoria",
+                "operationId": "get-api-v-categorias",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoriaDTOArray"
+                                },
+                                "example": [
+                                    {
+                                        "categoriaId": 0,
+                                        "nome": "string",
+                                        "imagemUrl": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Inclui uma nova categoria",
+                "description": "Exemplo de request:\r\n            \r\n    POST api/categorias\r\n    {\r\n       \"nome\": \"categoria1\",\r\n       \"imagemUrl\": \"http://teste.net/1.jpg\"\r\n    }",
+                "operationId": "post-api-v-categorias",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "objeto Categoria",
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Categorias/paginacao": {
+            "get": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "/api/{v}/Categorias/paginacao - GET",
+                "operationId": "get-api-v-categorias-paginacao",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pag",
+                        "in": "query",
+                        "description": "Format - int32.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "reg",
+                        "in": "query",
+                        "description": "Format - int32.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 5
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoriaDTOArray"
+                                },
+                                "example": [
+                                    {
+                                        "categoriaId": 0,
+                                        "nome": "string",
+                                        "imagemUrl": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Categorias/{id}": {
+            "get": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Obtem uma Categoria pelo seu Id",
+                "description": "Obtem uma Categoria pelo seu Id",
+                "operationId": "ObterCategoria",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32. codigo do categoria",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProdutoDTO"
+                                },
+                                "example": {
+                                    "produtoId": 0,
+                                    "nome": "string",
+                                    "descricao": "string",
+                                    "preco": 0,
+                                    "imagemUrl": "string",
+                                    "categoriaId": 0
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "/api/{v}/Categorias/{id} - PUT",
+                "operationId": "put-api-v-categorias-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoriaDTO"
+                            },
+                            "example": {
+                                "categoriaId": 0,
+                                "nome": "string",
+                                "imagemUrl": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "/api/{v}/Categorias/{id} - DELETE",
+                "operationId": "delete-api-v-categorias-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoriaDTO"
+                                },
+                                "example": {
+                                    "categoriaId": 0,
+                                    "nome": "string",
+                                    "imagemUrl": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Produtos/menorpreco": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Obtém os produtos ordenados por preço na ordem ascendente",
+                "description": "Obtém os produtos ordenados por preço na ordem ascendente",
+                "operationId": "get-api-v-produtos-menorpreco",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProdutoDTOArray"
+                                },
+                                "example": [
+                                    {
+                                        "produtoId": 0,
+                                        "nome": "string",
+                                        "descricao": "string",
+                                        "preco": 0,
+                                        "imagemUrl": "string",
+                                        "categoriaId": 0
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Produtos": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Exibe uma relação dos produtos",
+                "description": "Exibe uma relação dos produtos",
+                "operationId": "get-api-v-produtos",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProdutoDTOArray"
+                                },
+                                "example": [
+                                    {
+                                        "produtoId": 0,
+                                        "nome": "string",
+                                        "descricao": "string",
+                                        "preco": 0,
+                                        "imagemUrl": "string",
+                                        "categoriaId": 0
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "/api/{v}/Produtos - POST",
+                "operationId": "post-api-v-produtos",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Produtos/{id}": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Obtem um produto pelo seu identificador produtoId",
+                "description": "Obtem um produto pelo seu identificador produtoId",
+                "operationId": "ObterProduto",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32. Código do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProdutoDTO"
+                                },
+                                "example": {
+                                    "produtoId": 0,
+                                    "nome": "string",
+                                    "descricao": "string",
+                                    "preco": 0,
+                                    "imagemUrl": "string",
+                                    "categoriaId": 0
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Atualiza um produto pelo id",
+                "description": "Atualiza um produto pelo id",
+                "operationId": "put-api-v-produtos-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProdutoDTO"
+                            },
+                            "example": {
+                                "produtoId": 0,
+                                "nome": "string",
+                                "descricao": "string",
+                                "preco": 0,
+                                "imagemUrl": "string",
+                                "categoriaId": 0
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "/api/{v}/Produtos/{id} - DELETE",
+                "operationId": "delete-api-v-produtos-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProdutoDTO"
+                                },
+                                "example": {
+                                    "produtoId": 0,
+                                    "nome": "string",
+                                    "descricao": "string",
+                                    "preco": 0,
+                                    "imagemUrl": "string",
+                                    "categoriaId": 0
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Cliente": {
+            "get": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Retorna uma coleção de objetos Cliente",
+                "description": "Retorna uma coleção de objetos Cliente",
+                "operationId": "get-api-v-cliente",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ClienteDTOArray"
+                                },
+                                "example": [
+                                    {
+                                        "clienteId": 0,
+                                        "nomeCliente": "string",
+                                        "email": "string",
+                                        "telefone": "string",
+                                        "cpf": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Inclui uma novo cliente",
+                "description": "Exemplo de request:\r\n            \r\n    POST api/cliente\r\n    {\r\n       \"nome\": \"categoria1\",\r\n       \"imagemUrl\": \"http://teste.net/1.jpg\"\r\n    }",
+                "operationId": "post-api-v-cliente",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "objeto Cliente",
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Cliente/paginacao": {
+            "get": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "/api/{v}/Cliente/paginacao - GET",
+                "operationId": "get-api-v-cliente-paginacao",
+                "parameters": [
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pag",
+                        "in": "query",
+                        "description": "Format - int32.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "reg",
+                        "in": "query",
+                        "description": "Format - int32.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 5
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ClienteDTOArray"
+                                },
+                                "example": [
+                                    {
+                                        "clienteId": 0,
+                                        "nomeCliente": "string",
+                                        "email": "string",
+                                        "telefone": "string",
+                                        "cpf": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/{v}/Cliente/{id}": {
+            "get": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Obtem um Cliente pelo seu Id",
+                "description": "Obtem um Cliente pelo seu Id",
+                "operationId": "ObterCliente",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32. codigo do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProdutoDTO"
+                                },
+                                "example": {
+                                    "produtoId": 0,
+                                    "nome": "string",
+                                    "descricao": "string",
+                                    "preco": 0,
+                                    "imagemUrl": "string",
+                                    "categoriaId": 0
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "/api/{v}/Cliente/{id} - PUT",
+                "operationId": "put-api-v-cliente-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json-patch+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ClienteDTO"
+                            },
+                            "example": {
+                                "clienteId": 0,
+                                "nomeCliente": "string",
+                                "email": "string",
+                                "telefone": "string",
+                                "cpf": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                },
+                                "example": {
+                                    "type": "string",
+                                    "title": "string",
+                                    "status": 0,
+                                    "detail": "string",
+                                    "instance": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "/api/{v}/Cliente/{id} - DELETE",
+                "operationId": "delete-api-v-cliente-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Format - int32.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "v",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ClienteDTO"
+                                },
+                                "example": {
+                                    "clienteId": 0,
+                                    "nomeCliente": "string",
+                                    "email": "string",
+                                    "telefone": "string",
+                                    "cpf": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CategoriaDTO": {
+                "type": "object",
+                "properties": {
+                    "categoriaId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "imagemUrl": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ClienteDTO": {
+                "type": "object",
+                "properties": {
+                    "clienteId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "nomeCliente": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "telefone": {
+                        "type": "string"
+                    },
+                    "cpf": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProblemDetails": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "detail": {
+                        "type": "string"
+                    },
+                    "instance": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": {}
+            },
+            "ProdutoDTO": {
+                "type": "object",
+                "properties": {
+                    "produtoId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "descricao": {
+                        "type": "string"
+                    },
+                    "preco": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "imagemUrl": {
+                        "type": "string"
+                    },
+                    "categoriaId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "UsuarioDTO": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "confirmPassword": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ApiAutorizaGet200ApplicationJsonResponse": {
+                "type": "string"
+            },
+            "CategoriaDTOArray": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/CategoriaDTO"
+                }
+            },
+            "ClienteDTOArray": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/ClienteDTO"
+                }
+            },
+            "ProdutoDTOArray": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/ProdutoDTO"
+                }
+            }
+        },
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ]
+}
