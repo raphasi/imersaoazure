@@ -215,6 +215,10 @@ https://www.sslshopper.com/ssl-converter.html
    Secret: Get
 ```
 
+5- Associar VNET-SPOKE02 a Zona de DNS do Private Endpoint
+   - Acessar a zona de dns criada pelo private endpoint: privatelink.database.windows.net 
+   - Associar a vnet-spoke02
+
 ## STEP06 - Deploy estrutura INTRANET
 1- Instalar IIS nas VMS vm-intra01 e vm-intra02:
 ```cmd
@@ -232,10 +236,16 @@ c:\inetpub\wwwroot
 
 4- Criar um novo site no IIS
 ```cmd
-Nome: WebSite
+Stop no Default Web Site
+Nome: Intranet
 Porta: 80
 ```
-
+5- Executar somente na VM-INTRA02
+```cmd
+Acessar a pasta C:\inetpub\wwwroot\Intranet\Index.html
+Alterar o arquivo index.html na linha 113
+Alterar nome da vm para VM-INTRA02
+```
 
 ## STEP07 - Deploy Azure Load Balancer
 1- Deploy Load Balancer 
@@ -244,17 +254,25 @@ Porta: 80
    Tipo: Interno
    Região: uk-south
    Sku: Standard 
+   Frontend IP: Static - 10.20.1.100
    Backend: bepool-intra
+   Load Balance Rule: rule-intra80
+   Probe: probe-80
 ```
 ## STEP08 - Deploy Nat Gateway
 1- Deploy Nat Gateway
 ```cmd
    Nome: nat-gw01
    Região: uk-south
-   Tipo: Public IP Address
+   Public IP Address: pip-internet01
+   
 ```
 2- Associar a subnet sub-intra
+```cmd
+   Selecionar VNET: vnet-spoke01
+   Marcar a subnet: sub-intra
 
+```
 
 
 
@@ -269,7 +287,7 @@ https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-
 
 3- Baixar código da aplicação aplicação do seguinte link do Github:
 
-https://github.com/tftec-raphael
+https://github.com/raphasi/imersaoazure.git
 
 4- Copiar pasta da aplicação para o seguinte caminho
 ```cmd
@@ -293,10 +311,8 @@ Allow Azure services and resources to access this server: YES
 
 ```
 
-
-
 ## STEP11 - Deploy SQL Database
-1- Deploy SQL Datyabase
+1- Deploy SQL Database
 ```cmd
 Nome: xxxxxxx
 Server: Usar o server criado no passo anterior
@@ -308,7 +324,7 @@ Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
 ```
 
 
-## STEP12 - Imoportar Database 
+## STEP11 - Importar Database 
 1- Instalar o SSMS
 ```cmd
 Acessar o servidor vm-apps e instalar o SQL Management Studio
@@ -318,14 +334,34 @@ https://aka.ms/ssmsfullsetup
 2- Importar database aplicação WebSite
 ```cmd
 Abrir o SQL Management Studio
-Alterar formato de autenticação para SQL authentication  
+Server Name: Copia o nome do SQL Server criado no passo anterior
+Alterar formato de autenticação para SQL Server authentication  
 Logar com usuário e senha criados no passo anterior
 Importar o database usando a opção de dacpac
+*Caso necessário, alterar o nome do database para: sistemabadge_database
 ```
-3- Alterar connection string dos servidores
+
+4- Ajustar SQL Database
+```cmd
+Ajustar configuração do SQL Database:
+   - Compute + Storage: Mudar opção de backup para LRS
+```
+
+5- Ajustar configuração de rede para SQL Server
+Acessar o SQL Server criado e ajustar configuração de Networking:
+   - Add Private Endpoint: pvt-sqldb01
+   - Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
+   - Public network acess: Disable
+
+6- Associar VNET-SPOKE02 a Zona de DNS do Private Endpoint
+   - Acessar a zona de dns criada pelo private endpoint: privatelink.database.windows.net 
+   - Associar a vnet-spoke02
+   
+   
+7- Alterar connection string dos servidores
 ```cmd
 Acessar as VMs vm-web01 e vm-web02
-Acessar o arquivo applicationsetting.json 
+Acessar o arquivo C:\inetpub\wwwroot\WebSite\appsetting.json 
 Alterar a connection string o nome do banco de acordo com o banco criado
 Abrir o promt de comando como administrador e realizar executar o comando iisreset nas duas vms
 Testar abrir a aplicação usando localhost
@@ -333,41 +369,66 @@ Testar abrir a aplicação usando localhost
 
 
 ## STEP13 - Application Gateway
+**EXECUTAR ESSES PASSO EM UMA VM DO AZURE**
 1- Deplou Apg Gateway
 ```cmd
    Nome: appgw-site
    Região: japan-east
    Tier: Standard 2
    Tipo: Public IP Address
+   Frontend: Public
+   Public IP Adress: pip-appgw-site
    Backend: bepool-web
-   
-   Rule01: rule-https-web
-   Listener: lst-443
-   Protocol: HTTPS - Escolher o certificado do Key Vault
-   Backend Setting: bset80
-   
-   
-   Rule01: rule-http-web
-   Listener: lst-80
-   Protocol: HTTPS
-   Backend Setting: bset80
-   Target type: Redirection
 ```
+
+```cmd
+   Configurar primeiramente acesso a porta 80
+   Rule01: rule-http-web
+   Priority: 100
+   Listener: lst-80
+   Protocol: HTTP
+   Backend Setting: bset80
+``` 
 
 2- Criar um ASG
 ```cmd
    Nome: asg-web
    Região: japan-east   
 ```
+
 3- Associar a placa de rede das seguintes VMs ao ASG:
 ```cmd
   vm-web01
   vm-web02
 ```
+
 4- Liberar regra no NSG nsg-web
 ```cmd
 Criar regra, liberando qualquer origem, setar o destino com o Application Security Group e usar portas 80 e 443.
 ```
+
+5- Ajustar acesso para forçar porta HTTPS (443)
+```cmd   
+   Configurar acesso via porta 443
+   Rule01: rule-https-web
+   Priority: 101
+   Listener: lst-443
+   Protocol: HTTPS 
+   Choose a certificate:  Choose a certificate from Key Vault
+   Backend Setting: bset80
+ ```  
+ 
+ ```cmd 
+ Redirecionar acesso da porta 80 para 443 (https)
+   Rule01: rule-http-web
+   Listener: lst-80
+   Protocol: HTTP
+   Backend Setting: bset80
+   Target type: Redirection
+   Redirection Type: Permanent
+   Redirection Target: Listener - lst-443
+```
+
 5- Ajustar registro DNS externo
 ```cmd
 Acessar a zona de DNS público e criar um registro do A.
@@ -382,6 +443,7 @@ Usar Alias Record Set e apontar para o IP público do App Gateway.
    Performance: Standard
    Redundancy: GRS - Marcar opção para  Read Access
    Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
+   Private Enpoint Name: pvt-blob
    Storage Sub-Resource: Blob
 ```
 2- Criar um Container blob
