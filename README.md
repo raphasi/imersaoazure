@@ -183,7 +183,9 @@ Testar a validação do DNS com o seguinte comando:
 nslookup -type=SOA tftecprime.cloud
 ```
 3 - Gerar um certificado digital válido:
+
 Opções:
+
 OPÇÃO01: https://app.zerossl.com
 OPÇÃO02: https://punchsalad.com/ssl-certificate-generator/
 
