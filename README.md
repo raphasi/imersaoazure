@@ -87,7 +87,7 @@ Iremos utilizar pelo menos, 5 regiões diferentes do Azure, com o objetivo de at
      
 ```
 
-## STEP02 - Deploy dos NSGs
+## STEP03 - Deploy dos NSGs
 Criar 3 NSGs de acordo com o modelo abaixo:
 ```cmd
    Nome: nsg-hub
@@ -107,7 +107,7 @@ Criar 3 NSGs de acordo com o modelo abaixo:
    Associar Subnet: sub-web
 ```
 
-## STEP03 - Deploy das VMs
+## STEP04 - Deploy das VMs
 Para todas as VMs iremos o tamanho B2S e utilizar o sistema operacional Windows Server 2022.
 
 ```cmd
@@ -174,7 +174,7 @@ vnet-hub/vnet-spoke02 - vnet-spoke02/vnet-hub
 ```
 4 - Realizar teste de ping entre VMs de vnets diferentes novamente.
 
-## STEP04 - Configuração de domínios e certificados
+## STEP05 - Configuração de domínios e certificados
 1 - Criar um DNS Zone (Zona de DNS pública no Azure).
 
 2 - Apontar registros NS (name server) do provedor público para o Azure.
@@ -195,7 +195,7 @@ OPÇÃO02: https://punchsalad.com/ssl-certificate-generator/
 https://www.sslshopper.com/ssl-converter.html
 
 
-## STEP05 - Deploy Azure Key Vault
+## STEP06 - Deploy Azure Key Vault
 1- Deploy Azure Key Vault:
 ```cmd
    Nome: kvault-certs
@@ -219,7 +219,7 @@ https://www.sslshopper.com/ssl-converter.html
    - Acessar a zona de dns criada pelo private endpoint: privatelink.database.windows.net 
    - Associar a vnet-spoke02
 
-## STEP06 - Deploy estrutura INTRANET
+## STEP07 - Deploy estrutura INTRANET
 1- Instalar IIS nas VMS vm-intra01 e vm-intra02:
 ```cmd
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
@@ -247,7 +247,7 @@ Alterar o arquivo index.html na linha 113
 Alterar nome da vm para VM-INTRA02
 ```
 
-## STEP07 - Deploy Azure Load Balancer
+## STEP08 - Deploy Azure Load Balancer
 1- Deploy Load Balancer 
 ```cmd
    Nome: lb-intra
@@ -259,7 +259,7 @@ Alterar nome da vm para VM-INTRA02
    Load Balance Rule: rule-intra80
    Probe: probe-80
 ```
-## STEP08 - Deploy Nat Gateway
+## STEP09 - Deploy Nat Gateway
 1- Deploy Nat Gateway
 ```cmd
    Nome: nat-gw01
@@ -276,7 +276,7 @@ Alterar nome da vm para VM-INTRA02
 
 
 
-## STEP09 - Deploy Aplicação Web Site
+## STEP10 - Deploy Aplicação Web Site
 1- Instalar IIS nas VMS vm-intra01 e vm-intra02:
 ```cmd
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
@@ -299,7 +299,7 @@ Nome: WebSite
 Porta: 80
 ```
 
-## STEP10 - Deploy SQL Server
+## STEP11 - Deploy SQL Server
 1- Criar um novo SQL Server
 ```cmd
 Nome: sqlsrvtftec01 (usar um nome único)
@@ -311,7 +311,7 @@ Allow Azure services and resources to access this server: YES
 
 ```
 
-## STEP11 - Deploy SQL Database
+## STEP12 - Deploy SQL Database
 1- Deploy SQL Database
 ```cmd
 Nome: xxxxxxx
@@ -324,7 +324,7 @@ Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
 ```
 
 
-## STEP11 - Importar Database 
+## STEP13 - Importar Database 
 1- Instalar o SSMS
 ```cmd
 Acessar o servidor vm-apps e instalar o SQL Management Studio
@@ -341,24 +341,24 @@ Importar o database usando a opção de dacpac
 *Caso necessário, alterar o nome do database para: sistemabadge_database
 ```
 
-4- Ajustar SQL Database
+3- Ajustar SQL Database
 ```cmd
 Ajustar configuração do SQL Database:
    - Compute + Storage: Mudar opção de backup para LRS
 ```
 
-5- Ajustar configuração de rede para SQL Server
+4- Ajustar configuração de rede para SQL Server
 Acessar o SQL Server criado e ajustar configuração de Networking:
    - Add Private Endpoint: pvt-sqldb01
    - Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
    - Public network acess: Disable
 
-6- Associar VNET-SPOKE02 a Zona de DNS do Private Endpoint
+5- Associar VNET-SPOKE02 a Zona de DNS do Private Endpoint
    - Acessar a zona de dns criada pelo private endpoint: privatelink.database.windows.net 
    - Associar a vnet-spoke02
    
    
-7- Alterar connection string dos servidores
+6- Alterar connection string dos servidores
 ```cmd
 Acessar as VMs vm-web01 e vm-web02
 Acessar o arquivo C:\inetpub\wwwroot\WebSite\appsetting.json 
@@ -368,7 +368,7 @@ Testar abrir a aplicação usando localhost
 ```
 
 
-## STEP13 - Application Gateway
+## STEP14 - Application Gateway
 **EXECUTAR ESSES PASSO EM UMA VM DO AZURE**
 1- Deplou Apg Gateway
 ```cmd
@@ -429,46 +429,47 @@ Criar regra, liberando qualquer origem, setar o destino com o Application Securi
    Redirection Target: Listener - lst-443
 ```
 
-5- Ajustar registro DNS externo
+6- Ajustar registro DNS externo
 ```cmd
 Acessar a zona de DNS público e criar um registro do A.
 Usar Alias Record Set e apontar para o IP público do App Gateway.
 ```
 
-## STEP14 - Deploy Storage Account
+## STEP15 - Deploy Storage Account Público
 1- Deploy Storage Account
 ```cmd
    Nome: tftecimages01 (usar seu nome exclusivo)
    Região: east-us
    Performance: Standard
    Redundancy: GRS - Marcar opção para  Read Access
-   Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
-   Private Enpoint Name: pvt-blob01
    Storage Sub-Resource: Blob
-```
-2- Associar VNET-SPOKE01 Zona de DNs do Private Endpoint do Blob
-```cmd
-   Associar vnet-intra na zona de dns privatelink.blob.core.windows.net
 ```
 2- Criar um Container blob
 ```cmd
-   Nome: images
+   Nome: blob-tftec-container (container precisa ter esse nome exato)
 ```
-3- Criar um private endpoint
+
+
+## STEP16 - Deploy Storage Account Privado
+1- Deploy Storage Account
 ```cmd
+   Nome: tftecfiles01 (usar seu nome exclusivo)
+   Região: east-us
+   Performance: Standard
+   Redundancy: GRS - Marcar opção para  Read Access
    Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
    Private Enpoint Name: pvt-files01
-   Storage Sub-Resource: File
+   Storage Sub-Resource: Files
 ```
-4- Associar VNET-SPOKE01 Zona de DNs do Private Endpoint do Files
+2- Associar VNET-SPOKE01 Zona de DNs do Private Endpoint do Files
 ```cmd
    Associar vnet-intra na zona de dns privatelink.file.core.windows.net
 ```
-5- Criar um Azure Files
+3- Criar um Azure Files
 ```cmd
    Nome: corp
 ```
-6- Mapear Azure Files
+4- Mapear Azure Files
 ```cmd
 OBS: NÃO abrir o PowerShell como Admninistrator
    Mapear o Azure Files nas seguintes VMs:
@@ -478,10 +479,10 @@ OBS: NÃO abrir o PowerShell como Admninistrator
 Validar se a conexão está apontando para ip interno
 
 
-## STEP15 - Deploy Aplicação Imagens (WebApp)
+## STEP17 - Deploy Aplicação Imagens (WebApp)
 1- Criar um App Service Plan
 ```cmd
-   Nome: appplanimages
+   Nome: appplantftec
    Operating System: Windows
    Região: east-us
    Pricing plan: Standard S2 (caso a conta trial não mostre o modelo S2, escolha o S1 e depois faça upgrade para o S2)
@@ -490,33 +491,33 @@ Validar se a conexão está apontando para ip interno
 ```cmd
    Nome: tftecimages01 (usar seu nome exclusivo)
    Publish: Code
-   Runtime Stack: .NET6
+   Runtime Stack: ASP.NET V4.8
    Região: east-us
    Escolher AppServicePlan já criado
 ```
 3- Deploy da aplicação
 Baixar o zip da aplicação em 
-https://portal.tftecprime.com.br
+https://github.com/raphasi/imersaoazure
 
-4- Instalar o Azure CLI
-
-Windows
-https://aka.ms/installazurecliwindows
-
-macOS
-https://learn.microsoft.com/pt-br/cli/azure/install-azure-cli-macos
-
-5- Realizar o deploy da aplicação para o WebApp
-Abrir o Powershell ou Terminal e executar o seguinte comando:
+4- Realizar o deploy da aplicação para o WebApp
+Abrir o CloudShell e fazer upload do arquivo DeployBlob.zip
 ```cmd
-az login
-az webapp deploy --resource-group <group-name> --name <app-name> --src-path <zip-package-path>
+az webapp deploy --resource-group rg-azure --name <app-name> --src-path DeployBlob.zip
 ```
-6- Ajustar application setting para endereço do Storage Account
 
+5- Ajustar application setting para endereço do Storage Account
+   - Acessar o WebApp - Configuration
+   - Application settings
+   - New application settings
+   - Add/Edit application settings
+  ```cmd
+   Name: StorageConnectionString
+   Para montar o conteúdo do VALUE você deve pegar o valor da connection string do Access Key do Storage Account e juntar com os endereços de endpoint dos serviços, como o exemplo:
+   Value: DefaultEndpointsProtocol=https;AccountName=tftecimages0000001;AccountKey=3QPIgPlxUYhzKLu43wsC19EGnvpqKMDNiGIRYxXDHm+zm3w/x/g0fnb+AStUGrxZA==;BlobEndpoint=https://tftecimages000001.blob.core.windows.net/;TableEndpoint=https://tftecimages000001.table.core.windows.net/;QueueEndpoint=https://tftecimages000001.queue.core.windows.net/;FileEndpoint=https://tftecimages000001.file.core.windows.net/
+   SAVE
+   ```
 
-
-## STEP16 - Deploy VPN Site to Site (S2S)
+## STEP17 - Deploy VPN Site to Site (S2S)
 1- Criar a estrutura da VNET-ONPREMISES
 
 ```cmd
@@ -587,7 +588,7 @@ OBS: Deploy pode levar mais de 30 minutos
    Subnet: sub-onpremises
    ```
 
-## STEP17 - Realizar ajustes do perring na VNETs 
+## STEP18 - Realizar ajustes do perring na VNETs 
 1- Ajustar Peering entre HUB e os Spokes (HUB)
 ```cmd
 Virtual network gateway or Route Server
@@ -599,7 +600,7 @@ Virtual network gateway or Route Server
 Use the remote virtual network's gateway or Route Server
 ```
 
-## STEP18 - Deploy Route Table
+## STEP19 - Deploy Route Table
 1- Criar Route Table
 ```cmd
 Nome: rtable-onpremises
@@ -627,7 +628,7 @@ Next Hope: Virtual Appliance
 Associar o Route Table a subnet sub-onpremises
 ```
 
-## STEP19 - Deploy VPN Point to Site
+## STEP20 - Deploy VPN Point to Site
    - Address pool: 172.16.0.0/24
    - Tunnel type: OpenSSL
    - Authentication type: Azure Active Directory
@@ -637,29 +638,8 @@ Tenant ID: https://login.microsoftonline.com/"your Directory ID"
 Audience: 41b23e61-6c1e-4545-b367-cd054e0ed4b4 
 Issuer: https://sts.windows.net/"your Directory ID"/
 ```  
-
-## STEP20 - Deploy Azure Backup
-
-## STEP21 - Container Registry
-  ```cmd
-   Nome: acrimagestftec01 (nome deve ser único)
-   Região: brazil-south
-   SKU: Standard
-   ```
-
-## STEP22 - Deploy Cluster AKS
-  ```cmd
-   Cluster present configuration: Standard
-   Nome: aks-app01
-   Região: australia-east
-   AKS Pricing Tier: Standard
-   Kubernetes version: Default
-   Scale method: Autoscale
-   Network configuration: Kubenet
-   Container Registry:
-   ```
       
-## STEP23 - Deploy APIM - API Management service
+## STEP21 - Deploy APIM - API Management service
   ```cmd
    Cluster present configuration: Standard
    Nome: apim-tftec01
@@ -669,7 +649,7 @@ Issuer: https://sts.windows.net/"your Directory ID"/
    Pricing tier: Developer
    ```
    
-## STEP24 - Import Azure SQL Database
+## STEP22 - Import Azure SQL Database
 ```cmd
 Abrir o SQL Management Studio
 Server Name: Copiar o nome do SQL Server já existente
@@ -679,7 +659,7 @@ Importar o database usando a opção de dacpac
 Manter o nome do database como apim_database
 ```
 
-## STEP25 - Deploy WebApp API
+## STEP23 - Deploy WebApp API
 1- Criar um WebApp
 ```cmd
    Nome: tftecapi01 (usar seu nome exclusivo)
@@ -720,11 +700,7 @@ az webapp deploy --resource-group rg-azure --name <app-name> --src-path Deployme
    - Escolher a subnet sub-db
 
 
-
-
-
-
-## STEP25 - Deploy WebApp Gerenciador/Interface
+## STEP24 - Deploy WebApp Gerenciador/Interface
 1- Criar um WebApp
 ```cmd
    Nome: appinterface001 (usar seu nome exclusivo)
@@ -743,7 +719,7 @@ Abrir o Powershell ou Terminal e executar o seguinte comando:
 az login (ou utilizar o CloudShell)
 az webapp deploy --resource-group rg-azure --name <app-name> --src-path DeploymentGerenciador.zip
 ```
-4- Ajustar application setting para endereço do SQL Database
+4- Ajustar application settings 
    - Acessar o WebApp - Configuration
    - Application settings
    - New application settings
@@ -772,5 +748,23 @@ az webapp deploy --resource-group rg-azure --name <app-name> --src-path Deployme
    - SAVE
    
 
+## STEP26 - Container Registry
+  ```cmd
+   Nome: acrimagestftec01 (nome deve ser único)
+   Região: brazil-south
+   SKU: Standard
+   ```
+
+## STEP27 - Deploy Cluster AKS
+  ```cmd
+   Cluster present configuration: Standard
+   Nome: aks-app01
+   Região: australia-east
+   AKS Pricing Tier: Standard
+   Kubernetes version: Default
+   Scale method: Autoscale
+   Network configuration: Kubenet
+   Container Registry:
+   ```
 
 
