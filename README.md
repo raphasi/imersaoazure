@@ -443,8 +443,12 @@ Usar Alias Record Set e apontar para o IP público do App Gateway.
    Performance: Standard
    Redundancy: GRS - Marcar opção para  Read Access
    Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
-   Private Enpoint Name: pvt-blob
+   Private Enpoint Name: pvt-blob01
    Storage Sub-Resource: Blob
+```
+2- Associar VNET-SPOKE01 Zona de DNs do Private Endpoint do Blob
+```cmd
+   Associar vnet-intra na zona de dns privatelink.blob.core.windows.net
 ```
 2- Criar um Container blob
 ```cmd
@@ -453,10 +457,20 @@ Usar Alias Record Set e apontar para o IP público do App Gateway.
 3- Criar um private endpoint
 ```cmd
    Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
+   Private Enpoint Name: pvt-files01
    Storage Sub-Resource: File
 ```
-4- Mapear Azure Files
+4- Associar VNET-SPOKE01 Zona de DNs do Private Endpoint do Files
 ```cmd
+   Associar vnet-intra na zona de dns privatelink.file.core.windows.net
+```
+5- Criar um Azure Files
+```cmd
+   Nome: corp
+```
+6- Mapear Azure Files
+```cmd
+OBS: NÃO abrir o PowerShell como Admninistrator
    Mapear o Azure Files nas seguintes VMs:
    vm-intra01
    vm-intra02
@@ -470,7 +484,7 @@ Validar se a conexão está apontando para ip interno
    Nome: appplanimages
    Operating System: Windows
    Região: east-us
-   Pricing plan: Standard S2
+   Pricing plan: Standard S2 (caso a conta trial não mostre o modelo S2, escolha o S1 e depois faça upgrade para o S2)
    ```
 2- Criar um WebApp
 ```cmd
@@ -645,31 +659,27 @@ Issuer: https://sts.windows.net/"your Directory ID"/
    Container Registry:
    ```
       
-## STEP23 - Deploy APIM
+## STEP23 - Deploy APIM - API Management service
   ```cmd
    Cluster present configuration: Standard
-   Nome: aks-app01
-   Região: brazil-south
-   AKS Pricing Tier: Standard
-   Kubernetes version: Default
-   Scale method: Autoscale
-   Network configuration: Kubenet
-   Cont
+   Nome: apim-tftec01
+   Região: east-us
+   Organization Name: TFTEC Cloud
+   Administrator email: seu email para notificações
+   Pricing tier: Developer
    ```
    
-## STEP24 - Deploy Azure SQL Database
+## STEP24 - Import Azure SQL Database
 ```cmd
-Nome: xxxxxxx
-Server: Usar o server criado no passo anterior
-Compute + storage: Usar o Service Tier - DTU BASED - BASIC 
-Backup storage redundancy: LRS
-Add current client IP address: YES
-Add Private Endpoint: pvt-sqldb02
-Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
+Abrir o SQL Management Studio
+Server Name: Copiar o nome do SQL Server já existente
+Alterar formato de autenticação para SQL Server authentication  
+Logar com usuário e senha usados na criação do banco
+Importar o database usando a opção de dacpac
+Manter o nome do database como apim_database
 ```
 
-
-## STEP25 - Deploy WebApp
+## STEP25 - Deploy WebApp API
 1- Criar um WebApp
 ```cmd
    Nome: tftecapi01 (usar seu nome exclusivo)
@@ -680,15 +690,87 @@ Usar pvt enpdoint na vnet-hub e subnet sub-pvtendp
 ```
 2- Deploy da aplicação
 Baixar o zip da aplicação em 
-https://portal.tftecprime.com.br
+https://github.com/raphasi/imersaoazure
 
 3- Realizar o deploy da aplicação para o WebApp
 Abrir o Powershell ou Terminal e executar o seguinte comando:
 ```cmd
-az login
-az webapp deploy --resource-group <group-name> --name <app-name> --src-path <zip-package-path>
+az login (ou utilizar o CloudShell)
+az webapp deploy --resource-group rg-azure --name <app-name> --src-path DeploymentAPI.zip
 ```
 4- Ajustar application setting para endereço do SQL Database
+   - Acessar o WebApp - Configuration
+   - Connection string
+   - New connection string
+   - Add/Edit connection string
+  ```cmd
+   Name: DefaultConnection
+   Value: Server=tcp:sqlsrvtftec00001.database.windows.net,1433;Initial Catalog=apim_database;Persist Security Info=False;User ID=adminsql;Password=Partiunuvem@2023;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+   Type: SQLAzure
+   SAVE
+   ``` 
+   
+5- Ajustar conexão interna do WebApp com o Azure SQL Database
+   - Acessar o WebApp criado no passo anterior
+   - Networking
+   - Outbound Traffic
+   - Vnet Integration
+   - Add VNet
+   - Escolher a vnet-hub
+   - Escolher a subnet sub-db
 
 
-## STEP19 - Deploy APIM
+
+
+
+
+## STEP25 - Deploy WebApp Gerenciador/Interface
+1- Criar um WebApp
+```cmd
+   Nome: appinterface001 (usar seu nome exclusivo)
+   Publish: Code
+   Runtime Stack: .NET6
+   Região: east-us
+   Escolher AppServicePlan já criado
+```
+2- Deploy da aplicação
+Baixar o zip da aplicação em 
+https://github.com/raphasi/imersaoazure
+
+3- Realizar o deploy da aplicação para o WebApp
+Abrir o Powershell ou Terminal e executar o seguinte comando:
+```cmd
+az login (ou utilizar o CloudShell)
+az webapp deploy --resource-group rg-azure --name <app-name> --src-path DeploymentGerenciador.zip
+```
+4- Ajustar application setting para endereço do SQL Database
+   - Acessar o WebApp - Configuration
+   - Application settings
+   - New application settings
+   - Add/Edit application settings
+  ```cmd
+   Name: ServiceUri:UrlApi
+   Value: https://apim-tftec00001.azure-api.net (coletar a URL do APIM)
+   SAVE
+   ``` 
+
+## STEP25 - Expor requests no APIM
+1- Disponibilizar APIs externamente no APIM
+   - Acessar o APIM criado
+   - Acessar APIs
+   - Em Create from definition, escolher a opção OpenAPI
+   - Clicar em Select a file e importar o arquivo APICatalogo.openapi+json (baixado do diretório do github, dentro da pasta APICatalog)
+   - Clicar em Create
+   - Acessar em Design, a seção Backend
+   - Clicar em editar HTTP(s) endpoint
+   - Marcar a opção override e adicionar o endereço do WebApp (APIM - tftecapi01)
+   - Exemplo: https://tftecapi000001.azurewebsites.net/
+   - SAVE
+   - Acessar a aba Settings
+   - Apagar o conteúdo do campo Web service URL
+   - Desmarcar a opção Subscription required
+   - SAVE
+   
+
+
+
