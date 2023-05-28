@@ -40,19 +40,19 @@ Iremos utilizar pelo menos, 5 regiões diferentes do Azure, com o objetivo de at
       
    # Subnets   
    Subnet: sub-srv
-   Address Space: 10.10.1.0.0/24
+   Address Space: 10.10.1.0/24
    
    Subnet: sub-db
-   Address Space: 10.10.2.0.0/24
+   Address Space: 10.10.2.0/24
    
    Subnet: sub-pvtendp
-   Address Space: 10.10.252.0.0/24
+   Address Space: 10.10.252.0/24
    
    Subnet: AzureBastionSubnet
-   Address Space: 10.10.250.0.0/24
+   Address Space: 10.10.250.0/24
    
    Subnet: GatewaySubnet
-   Address Space: 10.10.251.0.0/24
+   Address Space: 10.10.251.0/24
    
 ```
 
@@ -66,7 +66,7 @@ Iremos utilizar pelo menos, 5 regiões diferentes do Azure, com o objetivo de at
    
    # Subnets
    Subnet: sub-intra
-   Address Space: 10.20.1.0.0/24
+   Address Space: 10.20.1.0/24
      
 ```
 
@@ -80,10 +80,10 @@ Iremos utilizar pelo menos, 5 regiões diferentes do Azure, com o objetivo de at
    
    # Subnets
    Subnet: sub-web
-   Address Space: 10.30.1.0.0/24
+   Address Space: 10.30.1.0/24
    
    Subnet: sub-appgw
-   Address Space: 10.30.250.0.0/24
+   Address Space: 10.30.250.0/24
      
 ```
 
@@ -277,7 +277,7 @@ Alterar nome da vm para VM-INTRA02
 
 
 ## STEP10 - Deploy Aplicação Web Site
-1- Instalar IIS nas VMS vm-intra01 e vm-intra02:
+1- Instalar IIS nas VMS vm-web01 e vm-web02
 ```cmd
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
 ```
@@ -499,23 +499,22 @@ Validar se a conexão está apontando para ip interno
 Baixar o zip da aplicação em 
 https://github.com/raphasi/imersaoazure
 
-4- Realizar o deploy da aplicação para o WebApp
+
+4- Ajustar application setting para endereço do Storage Account
+   - Ajustar o arquivo web.config, com a string do Storage Account
+  ```cmd
+   Para montar o conteúdo do VALUE você deve pegar o valor da connection string do Access Key do Storage Account e juntar com os endereços de endpoint dos serviços, como o exemplo:
+   Value: DefaultEndpointsProtocol=https;AccountName=tftecimages0000001;AccountKey=3QPIgPlxUYhzKLu43wsC19EGnvpqKMDNiGIRYxXDHm+zm3w/x/g0fnb+AStUGrxZA==;BlobEndpoint=https://tftecimages000001.blob.core.windows.net/;TableEndpoint=https://tftecimages000001.table.core.windows.net/;QueueEndpoint=https://tftecimages000001.queue.core.windows.net/;FileEndpoint=https://tftecimages000001.file.core.windows.net/
+   
+   Zipar o conteúdo novamente.
+   ```
+   
+ 5- Realizar o deploy da aplicação para o WebApp
 Abrir o CloudShell e fazer upload do arquivo DeployBlob.zip
 ```cmd
 az webapp deploy --resource-group rg-azure --name <app-name> --src-path DeployBlob.zip
 ```
-
-5- Ajustar application setting para endereço do Storage Account
-   - Acessar o WebApp - Configuration
-   - Application settings
-   - New application settings
-   - Add/Edit application settings
-  ```cmd
-   Name: StorageConnectionString
-   Para montar o conteúdo do VALUE você deve pegar o valor da connection string do Access Key do Storage Account e juntar com os endereços de endpoint dos serviços, como o exemplo:
-   Value: DefaultEndpointsProtocol=https;AccountName=tftecimages0000001;AccountKey=3QPIgPlxUYhzKLu43wsC19EGnvpqKMDNiGIRYxXDHm+zm3w/x/g0fnb+AStUGrxZA==;BlobEndpoint=https://tftecimages000001.blob.core.windows.net/;TableEndpoint=https://tftecimages000001.table.core.windows.net/;QueueEndpoint=https://tftecimages000001.queue.core.windows.net/;FileEndpoint=https://tftecimages000001.file.core.windows.net/
-   SAVE
-   ```
+   
 
 ## STEP17 - Deploy VPN Site to Site (S2S)
 1- Criar a estrutura da VNET-ONPREMISES
@@ -629,7 +628,8 @@ Associar o Route Table a subnet sub-onpremises
 ```
 
 ## STEP20 - Deploy VPN Point to Site
-   - Address pool: 172.16.0.0/24
+1- Configuração do VPN P2S
+- Address pool: 172.16.0.0/24
    - Tunnel type: OpenSSL
    - Authentication type: Azure Active Directory
      Dados do Azure Active Directory
@@ -638,7 +638,21 @@ Tenant ID: https://login.microsoftonline.com/"your Directory ID"
 Audience: 41b23e61-6c1e-4545-b367-cd054e0ed4b4 
 Issuer: https://sts.windows.net/"your Directory ID"/
 ```  
-      
+2- Ajusra resolução de nomes para VPN
+   - Instalar a role de IIs na VM-APPS
+   - Criar uma regra de forward do endereço do seu dns interno para o IP de DNS do Azure (168.63.129.16)
+
+3- Ajustar o cliente de VPN
+   - Adicionar a TAG com o endereço de VPN ao arquivo azurevpnconfig.xml
+   ```cmd
+ <clientconfig>
+	<dnsservers>
+		<dnsserver>10.10.1.4</dnsserver>
+	</dnsservers>
+</clientconfig>
+   ```  
+
+
 ## STEP21 - Deploy APIM - API Management service
   ```cmd
    Cluster present configuration: Standard
