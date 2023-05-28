@@ -531,7 +531,7 @@ az webapp deploy --resource-group rg-azure --name <app-name> --src-path DeployBl
       
    # Subnets   
    Subnet: sub-onpremises
-   Address Space: 192.168.1.0.0/24
+   Address Space: 192.168.1.0/24
 ```
 
 2- Deploy Virtual Network Gateway
